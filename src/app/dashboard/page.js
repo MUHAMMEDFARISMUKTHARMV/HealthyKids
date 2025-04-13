@@ -1,6 +1,6 @@
 import DashboardHeader from "@/components/DashboardHeader";
 import AttendenceDistribution from "@/components/AttendenceDistribution";
-import DrillMarkRadialChart from "@/components/DrillMarkRadialChart";
+import DrillMarkDoubleBar from "@/components/DrillMarkDoubleBar";
 import DrillsAttemptedBySchool from "@/components/DrillsAttemptedBySchool";
 import MonthlyDrillActivity from "@/components/MonthlyDrillActivity";
 import DistrictWiseDrillPerfomance from "@/components/DistrictWiseDrillPerfomance";
@@ -15,7 +15,7 @@ export default function DashboardPage() {
       <DistrictWiseDrillPerfomance />
       <AttendenceDistribution />
       <AvgScoreByDist />
-      <DrillMarkRadialChart />
+      <DrillMarkDoubleBar />
       <DrillsAttemptedBySchool />
       
     </main>

@@ -126,17 +126,18 @@ export default function TotalDrillsBySchoolChart() {
                   textAnchor="end"
                   interval={0}
                   height={60}
-                  // label={{
-                  //   // value: "School Name",
-                  //   position: "insideBottom",
-                  //   offset: -60,
-                  //   style: { fontWeight: "bold" }
-                  // }}
+                   label={{
+                   value: "School Name",
+                   position: "insideBottom",
+                   offset: -60,
+                   style: { fontWeight: "bold" }
+                  }}
                 />
                 <YAxis
                   label={{
                     value: "Total Drills Attempted",
                     angle: -90,
+                    offset: -20,
                     position: "insideLeft",
                     style: { fontWeight: "bold" }
                   }}

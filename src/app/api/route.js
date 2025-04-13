@@ -32,7 +32,7 @@ export async function GET(req) {
 
       }
 
-      case "DrillMarkRadialChart": {
+      case "DrillMarkDoubleBar": {
         const [rows] = await connection.query(`
           SELECT 
               DrillMark, 

@@ -114,6 +114,13 @@ export default function AvgScoreByDist() {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
+                label={{
+                  value: "Average Score",
+                  position: "insideLeft",
+                  offset: 180,
+                  dy: 20,
+                  style: { fontWeight: "bold" }
+                }}
               />
               <YAxis 
                 domain={['auto', 'auto']} 
@@ -121,6 +128,14 @@ export default function AvgScoreByDist() {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
+                label={{
+                  value: "Average Score",
+                  angle: -90,
+                  position: "insideBottom",
+                  offset: 120,
+                  dx: -12,
+                  style: { fontWeight: "bold" }
+                 }}
               />
               <ChartTooltip
                 cursor={false}

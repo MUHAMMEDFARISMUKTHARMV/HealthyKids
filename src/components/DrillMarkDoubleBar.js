@@ -65,7 +65,7 @@ export default function DrillMarkBarChart() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api?type=DrillMarkRadialChart&startDate=${startDate}&endDate=${endDate}`);
+        const response = await fetch(`/api?type=DrillMarkDoubleBar&startDate=${startDate}&endDate=${endDate}`);
 
         if (!response.ok) throw new Error("Failed to fetch data");
 

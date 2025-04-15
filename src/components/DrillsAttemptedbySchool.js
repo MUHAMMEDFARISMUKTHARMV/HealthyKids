@@ -57,7 +57,7 @@ const Spinner = () => (
 );
 
 // 📊 Bar chart component
-export default function TotalDrillsBySchoolChart() {
+export default function DrillsAttemptedBySchool() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

@@ -38,7 +38,7 @@ const chartConfig = {
     color: "hsl(var(--chart-2))",
   },
 };
-export default function Component() {
+export default function MonthlyDrillActivity() {
   const [chartData, setChartData] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)

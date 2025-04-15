@@ -12,7 +12,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -37,7 +36,7 @@ export default function AvgScoreByDist() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api?type=DistrictWiseDrillPerfomance&startDate=${startDate}&endDate=${endDate}`);
+        const response = await fetch(`/api?type=DistrictWiseDrillPerfomance&start_date=${startDate}&end_date=${endDate}`);
         if (!response.ok) throw new Error("Failed to fetch data");
         const result = await response.json();
 
@@ -64,11 +63,16 @@ export default function AvgScoreByDist() {
     ? data.reduce((sum, item) => sum + item.AvgScore, 0) / data.length 
     : 0;
     
-  const completionRate = data.length
-    ? data.reduce((sum, item) => sum + item.CompletedDrills, 0) / 
-      data.reduce((sum, item) => sum + item.TotalAttempts, 0) * 100
-    : 0;
+  const { completed, total } = data.reduce(
+  (acc, item) => {
+    acc.completed += item.CompletedDrills;
+    acc.total += item.TotalAttempts;
+    return acc;
+  },
+  { completed: 0, total: 0 }
+);
 
+const completionRate = total > 0 ? (completed / total) * 100 : 0;
   if (loading) {
     return (
       <Card className="w-full h-80 flex items-center justify-center">
@@ -115,11 +119,11 @@ export default function AvgScoreByDist() {
                 axisLine={false}
                 tickMargin={8}
                 label={{
-                  value: "Average Score",
+                  value: " District ID",
                   position: "insideLeft",
-                  offset: 180,
+                  offset: 560,
                   dy: 20,
-                  style: { fontWeight: "bold" }
+                  style: { fontWeight: "bold" ,fontsize: 16}
                 }}
               />
               <YAxis 
@@ -132,9 +136,9 @@ export default function AvgScoreByDist() {
                   value: "Average Score",
                   angle: -90,
                   position: "insideBottom",
-                  offset: 120,
-                  dx: -12,
-                  style: { fontWeight: "bold" }
+                  offset: 320,
+                  dx: -22,
+                  style: { fontWeight: "bold" ,fontsize: 16}
                  }}
               />
               <ChartTooltip
@@ -168,7 +172,7 @@ export default function AvgScoreByDist() {
           Overall average: {avgScoreTotal.toFixed(2)} <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Completion rate: {completionRate.toFixed(2)}% across all districts
+          {/* Completion rate: {completionRate.toFixed(2)}% across all districts */}
         </div>
       </CardFooter>
     </Card>

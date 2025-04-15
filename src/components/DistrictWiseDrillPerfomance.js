@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { TrendingUp, Loader2 } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis} from "recharts"
 import { useSearchParams } from "next/navigation"
 import {
   Card,
@@ -13,7 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -44,7 +43,7 @@ export default function DistrictWiseDrillPerformance() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api?type=DistrictWiseDrillPerfomance&startDate=${startDate}&endDate=${endDate}`);
+        const response = await fetch(`/api?type=DistrictWiseDrillPerfomance&start_date=${startDate}&end_date=${endDate}`);
         if (!response.ok) throw new Error("Failed to fetch data");
         const result = await response.json();
 
@@ -115,12 +114,12 @@ export default function DistrictWiseDrillPerformance() {
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="DistrictID"
-                label={{ value: "District ID", position: "bottom", offset: -10 }}
+                label={{ value: "District ID", position: "bottom", offset: -4,fontWeight: "bold", fontSize: 16 }}
               
                 tickMargin={10}
               />
               <YAxis
-                label={{ value: "Count", angle: -90, position: "insideLeft", offset: -5 }}
+                label={{ value: "Count", angle: -90, position: "insideLeft", offset: 0 ,fontWeight: "bold",fontSize: 16}}
                 fillOpacity={0.4}
 
               />

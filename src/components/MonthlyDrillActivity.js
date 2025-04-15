@@ -21,7 +21,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -59,9 +58,9 @@ export default function Component() {
         const result = await response.json();
   
         const formatted = result.map((item=> ({
-          month: item.Month,
-          DrillsStarted: item.DrillsStarted,
-          DrillsCompleted: item.DrillsCompleted,
+          month: item.month,
+          DrillsStarted: item.drills_started,
+          DrillsCompleted: item.drills_completed,
         })));
   
         setChartData(formatted);
@@ -106,6 +105,7 @@ export default function Component() {
                     position: "insideBottom",
                     offset: -5,
                     fontWeight: "bold",
+                    fontSize: 16 
                   }}
                 />
                 <YAxis
@@ -114,6 +114,7 @@ export default function Component() {
                     angle: -90,
                     position: "insideLeft",
                     fontWeight: "bold",
+                    fontSize: 16 
                   }}
                 />
                 <ChartTooltip

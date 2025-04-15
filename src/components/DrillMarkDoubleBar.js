@@ -14,13 +14,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-export default function DrillMarkBarChart() {
+export default function DrillMarkDoubleBar() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,35 +27,14 @@ export default function DrillMarkBarChart() {
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
 
-  // Create dynamic chart config based on data
   const chartConfig = {
-    students: {
-      label: "Students",
-    },
-    drillMark0: {
-      label: "DrillMark 0",
-      color: "hsl(var(--chart-1))",
-    },
-    drillMark1: {
-      label: "DrillMark 1",
-      color: "hsl(var(--chart-2))",
-    },
-    drillMark2: {
-      label: "DrillMark 2",
-      color: "hsl(var(--chart-3))",
-    },
-    drillMark3: {
-      label: "DrillMark 3",
-      color: "hsl(var(--chart-4))",
-    },
-    drillMark4: {
-      label: "DrillMark 4",
-      color: "hsl(var(--chart-5))",
-    },
-    drillMark5: {
-      label: "DrillMark 5",
-      color: "#E77B52",
-    },
+    students: { label: "Students" },
+    drillMark0: { label: "DrillMark 0", color: "hsl(var(--chart-1))" },
+    drillMark1: { label: "DrillMark 1", color: "hsl(var(--chart-2))" },
+    drillMark2: { label: "DrillMark 2", color: "hsl(var(--chart-3))" },
+    drillMark3: { label: "DrillMark 3", color: "hsl(var(--chart-4))" },
+    drillMark4: { label: "DrillMark 4", color: "hsl(var(--chart-5))" },
+    drillMark5: { label: "DrillMark 5", color: "#E77B52" },
   }
 
   useEffect(() => {
@@ -65,22 +43,20 @@ export default function DrillMarkBarChart() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api?type=DrillMarkDoubleBar&startDate=${startDate}&endDate=${endDate}`);
-
+        const response = await fetch(`/api?type=DrillMarkDoubleBar&start_date=${startDate}&end_date=${endDate}`);
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const result = await response.json();
 
-        // Format data using CSS var color scheme matching chart config
         const formatted = result.map((item) => {
-          const drillMarkKey = `drillMark${item.DrillMark}`;
+          const mark = item.drillmark;
+          const key = `drillMark${mark}`;
           return {
-            drillMark: drillMarkKey,
-            students: item.CountOfStudents,
-            fill: `var(--color-${drillMarkKey})`,
+            drillMark: key,
+            students: item.countofstudents,
+            fill: chartConfig[key]?.color ?? "hsl(var(--border))",
           };
         }).sort((a, b) => {
-          // Sort by drill mark number (extract number from drillMarkX)
           const aNumber = parseInt(a.drillMark.replace("drillMark", ""));
           const bNumber = parseInt(b.drillMark.replace("drillMark", ""));
           return aNumber - bNumber;
@@ -98,12 +74,11 @@ export default function DrillMarkBarChart() {
     fetchData();
   }, [startDate, endDate]);
 
-  // Calculate total students
   const totalStudents = data.reduce((sum, item) => sum + item.students, 0);
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="w-full">
+      <CardHeader className="center">
         <CardTitle>Drill Mark Distribution</CardTitle>
         <CardDescription>Student count by drill mark level</CardDescription>
       </CardHeader>
@@ -128,9 +103,7 @@ export default function DrillMarkBarChart() {
               accessibilityLayer
               data={data}
               layout="vertical"
-              margin={{
-                left: 0,
-              }}
+              margin={{ left: 10 }}
               height={400}
             >
               <YAxis
@@ -139,15 +112,10 @@ export default function DrillMarkBarChart() {
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
-                tickFormatter={(value) =>
-                  chartConfig[value]?.label || value
-                }
+                tickFormatter={(value) => chartConfig[value]?.label || value}
               />
               <XAxis dataKey="students" type="number" hide />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
+              <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
               <Bar dataKey="students" layout="vertical" radius={5} />
             </BarChart>
           </ChartContainer>

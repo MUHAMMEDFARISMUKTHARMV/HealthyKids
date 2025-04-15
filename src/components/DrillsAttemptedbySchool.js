@@ -71,7 +71,8 @@ export default function TotalDrillsBySchoolChart() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api?type=DrillsAttemptedbySchool&startDate=${startDate}&endDate=${endDate}`);
+        const response = await fetch(`/api?type=DrillsAttemptedBySchool&start_date=${startDate}&end_date=${endDate}`);
+
         if (!response.ok) throw new Error('Failed to fetch data');
         const result = await response.json();
 
@@ -97,7 +98,7 @@ export default function TotalDrillsBySchoolChart() {
   const topSchool = data.find(item => item.TotalDrillsAttempted === highest)?.SchoolName;
 
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader className="center">
         <CardTitle>Total Drills Attempted by School</CardTitle>
         <CardDescription>Shows how many drills each school attempted</CardDescription>
@@ -129,7 +130,7 @@ export default function TotalDrillsBySchoolChart() {
                    label={{
                    value: "School Name",
                    position: "insideBottom",
-                   offset: -60,
+                   offset: -100,
                    style: { fontWeight: "bold" }
                   }}
                 />
@@ -137,9 +138,11 @@ export default function TotalDrillsBySchoolChart() {
                   label={{
                     value: "Total Drills Attempted",
                     angle: -90,
-                    offset: -20,
+                    offset: -10,
+                    dy: 70,
+
                     position: "insideLeft",
-                    style: { fontWeight: "bold" }
+                    style: { fontWeight: "bold",dy: -40 }
                   }}
                 />
                 <Tooltip content={<CustomTooltip />} />

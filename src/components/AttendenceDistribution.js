@@ -1,12 +1,10 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts"
+import { useState, useEffect } from "react";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { useSearchParams } from "next/navigation";
 
-
-
-const COLORS = ["#E76B52", "#2CA4A4"] // Green for 'P', Red for 'A'
+const COLORS = ["#E76B52", "#2CA4A4"]; // Present - Teal, Absent - Red
 
 const Card = ({ className, children, ...props }) => (
   <div className={`rounded-lg border bg-white shadow-sm ${className || ''}`} {...props}>
@@ -44,10 +42,11 @@ const CardFooter = ({ className, children, ...props }) => (
   </div>
 );
 
-export default function AttendancePieChart() {
+export default function Attendancedistribution() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const searchParams = useSearchParams();
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
@@ -58,18 +57,20 @@ export default function AttendancePieChart() {
     const fetchData = async () => {
       try {
         setLoading(true);
-
-        const response = await fetch(`/api?type=AttendenceDistribution&startDate=${startDate}&endDate=${endDate}`);
+        const response = await fetch(`/api?type=AttendenceDistribution&start_date=${startDate}&end_date=${endDate}`);
         
         if (!response.ok) throw new Error('Failed to fetch data');
         const result = await response.json();
+        console.log("Raw API result:", result);
 
-        const formattedData = result.map(item => ({
-          status: item.StuAttend === "P" ? "Present" : "Absent",
-          count: item.Count,
+        const formatted = result.map(item => ({
+          status: item.stuattend === "P" ? "Present" : "Absent",
+          count: item.count,
         }));
 
-        setData(formattedData);
+        console.log("Formatted Data:", formatted);
+
+        setData(formatted);
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -80,22 +81,21 @@ export default function AttendancePieChart() {
     };
 
     fetchData();
-  }, [startDate, endDate] );
+  }, [startDate, endDate]);
 
   const total = data.reduce((acc, item) => acc + item.count, 0);
 
-  // 👉 Dynamic insight computation
-const presentData = data.find(d => d.status === "Present");
-const absentData = data.find(d => d.status === "Absent");
+  const presentData = data.find(d => d.status === "Present") || { count: 0 };
+  const absentData = data.find(d => d.status === "Absent") || { count: 0 };
 
-const presentPercent = ((presentData?.count || 0) / total * 100).toFixed(1);
-const absentPercent = ((absentData?.count || 0) / total * 100).toFixed(1);
+  const presentPercent = ((presentData.count / total) * 100).toFixed(1);
+  const absentPercent = ((absentData.count / total) * 100).toFixed(1);
 
-const insight = `${presentPercent}% of students were present, while ${absentPercent}% were absent during the selected period. This attendance trend provides a clear view of student participation.`;
+  const insight = `${presentPercent}% of students were present, while ${absentPercent}% were absent during the selected period.`;
 
   return (
     <Card>
-      <CardHeader  className="items-center pb-0">
+      <CardHeader className="items-center pb-0">
         <CardTitle>Student Attendance Distribution</CardTitle>
         <CardDescription>Present vs Absent</CardDescription>
       </CardHeader>
@@ -118,7 +118,7 @@ const insight = `${presentPercent}% of students were present, while ${absentPerc
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 >
                   {data.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length] } />
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip formatter={(value) => `${value.toLocaleString()} students`} />
@@ -129,10 +129,10 @@ const insight = `${presentPercent}% of students were present, while ${absentPerc
       </CardContent>
       {!loading && !error && (
         <CardFooter className="text-sm text-gray-500 flex flex-col gap-1">
-        <div>Total students marked: {total.toLocaleString()}</div>
-        <div>{insight}</div>
-      </CardFooter>
+          <div>Total students marked: {total.toLocaleString()}</div>
+          <div>{insight}</div>
+        </CardFooter>
       )}
     </Card>
-  )
+  );
 }

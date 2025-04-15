@@ -1,26 +1,34 @@
 "use client"
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 export default function ShowTable() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const searchParams = useSearchParams();
-  const startDate = searchParams.get("startDate");
-  const endDate = searchParams.get("endDate");
 
   useEffect(() => {
-    fetch(`/api?type=DistrictWiseDrillPerfomance&startDate=${startDate}&endDate=${endDate}`)
-      .then((res) => res.json())
+    setLoading(true);
+    fetch(`/api?type=AttendenceDistribution`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch data');
+        return res.json();
+      })
       .then((result) => {
         if (result.error) throw new Error(result.error);
         setData(result);
+        setError(null);
       })
-      .catch((err) => setError(err.message));
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
 
   if (error) return <p className="text-red-500">Error: {error}</p>;
-  if (!data.length) return <p>Loading...</p>;
+  if (loading) return (
+    <div className="flex items-center justify-center p-8">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+    </div>
+  );
+  if (!data.length) return <p>No data available</p>;
 
   const headers = Object.keys(data[0]);
 
@@ -41,7 +49,11 @@ export default function ShowTable() {
             <tr key={i} className="hover:bg-gray-50">
               {headers.map((header) => (
                 <td key={header} className="border px-4 py-2">
-                  {row[header]}
+                  {typeof row[header] === 'number' ? 
+                    header.includes('Avg') ? 
+                      row[header].toFixed(2) : 
+                      row[header].toLocaleString() 
+                    : row[header]}
                 </td>
               ))}
             </tr>

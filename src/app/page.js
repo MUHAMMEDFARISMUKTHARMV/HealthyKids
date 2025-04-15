@@ -4,13 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Home() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md">
+    <div className="relative p-6 bg-white shadow-md rounded-lg w-[800px] mx-auto mt-10">
+      <Card className="">
         <CardHeader>
-          <CardTitle className="text-center">School Drill Analytics</CardTitle>
+          <CardTitle className="text-3xl text-center font-bold text-gray-800 ">School Drill Report</CardTitle>
         </CardHeader>
         <CardContent>
-          <h2 className="text-lg mb-4 text-center">Select Date Range for Analysis</h2>
+          <p className="text-sm text-center text-gray-600 mt-2">Select Date Range For School Drill Report Generation</p>
+
           <DateRangeSelector />
         </CardContent>
       </Card>

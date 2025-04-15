@@ -172,7 +172,7 @@ const completionRate = total > 0 ? (completed / total) * 100 : 0;
           Overall average: {avgScoreTotal.toFixed(2)} <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          {/* Completion rate: {completionRate.toFixed(2)}% across all districts */}
+          Completion rate: {completionRate.toFixed(2)}% across all districts
         </div>
       </CardFooter>
     </Card>

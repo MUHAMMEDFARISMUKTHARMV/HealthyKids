@@ -1,4 +1,3 @@
-
 import { Suspense } from "react";
 import DashboardHeader from "@/components/DashboardHeader";
 import AttendenceDistribution from "@/components/AttendenceDistribution";
@@ -8,8 +7,11 @@ import MonthlyDrillActivity from "@/components/MonthlyDrillActivity";
 import DistrictWiseDrillPerfomance from "@/components/DistrictWiseDrillPerfomance";
 import AvgScoreByDist from "@/components/AvgScoreByDist";
 
-async function DashboardPage() {
-  
+// Disable static page generation
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export default function DashboardPage() {
   return (
     <div className="flex flex-col">
       <DashboardHeader />
@@ -36,4 +38,3 @@ async function DashboardPage() {
     </div>
   );
 }
-export default DashboardPage;

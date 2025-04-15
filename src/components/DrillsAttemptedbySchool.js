@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { Bar, BarChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
 import { useSearchParams } from "next/navigation";
 
-
 // Card components (same as before)
 const Card = ({ className, children, ...props }) => (
   <div className={`rounded-lg border bg-white shadow-sm ${className || ''}`} {...props}>
